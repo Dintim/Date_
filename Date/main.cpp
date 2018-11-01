@@ -2,10 +2,16 @@
 
 void main()
 {
-	date_ a(4, 5, 2011);
-	date_ b(14, 5, 2011);
-	bool res = a >= b;
-	cout << res << endl;
+	date_ a(22,5,2015);
+	date_ b;
+	b=a+478;
+	
+	cout << b;
+	b.getWeekDay();
+
+	/*bool res = a >= b;
+	cout << res << endl;*/
+	
 
 	system("pause");
 }
