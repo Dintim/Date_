@@ -187,6 +187,116 @@ date_ date_::operator-=(int day)
 	return *this;
 }
 
+date_ date_::operator++(int)
+{
+	date_ tmp;
+	tmp = *this;
+	this->day++;
+	if (this->day > 31 && (this->month == 1 || this->month == 3 || this->month == 5 || this->month == 7 || this->month == 8 || this->month == 10)) {
+		this->month++;
+		this->day = this->day - 31;
+	}
+	else if (this->day > 31 && this->month == 12) {
+		this->year++;
+		this->month = 1;
+		this->day = this->day - 31;
+	}
+	else if (this->day > 30 && (this->month == 4 || this->month == 6 || this->month == 9 || this->month == 11)) {
+		this->month++;
+		this->day = this->day - 30;
+	}
+	else if (this->day > 28 && this->month == 2) {
+		if (this->day > 29 && (this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))) {
+			this->month++;
+			this->day = this->day - 29;
+		}
+		else if (this->day > 28 && !(this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))) {
+			this->month++;
+			this->day = this->day - 28;
+		}
+	}	
+	return tmp;
+}
+
+date_ date_::operator--(int)
+{
+	date_ tmp;
+	tmp = *this;
+	this->day--;
+	if (this->day == 0) {
+		this->month--;
+		if (this->month == 1 || this->month == 3 || this->month == 5 || this->month == 7 || this->month == 8 || this->month == 10 || this->month == 12)
+			this->day = 31;
+		else if (this->month == 0) {
+			this->day = 31;
+			this->year--;
+			this->month = 12;
+		}
+		else if (this->month == 4 || this->month == 6 || this->month == 9 || this->month == 11)
+			this->day = 30;
+		else if (this->month == 2) {
+			if (this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))
+				this->day = 29;
+			else
+				this->day = 28;
+		}
+	}		
+	return tmp;
+}
+
+date_ date_::operator++()
+{
+	this->day++;
+	if (this->day > 31 && (this->month == 1 || this->month == 3 || this->month == 5 || this->month == 7 || this->month == 8 || this->month == 10)) {
+		this->month++;
+		this->day = this->day - 31;
+	}
+	else if (this->day > 31 && this->month == 12) {
+		this->year++;
+		this->month = 1;
+		this->day = this->day - 31;
+	}
+	else if (this->day > 30 && (this->month == 4 || this->month == 6 || this->month == 9 || this->month == 11)) {
+		this->month++;
+		this->day = this->day - 30;
+	}
+	else if (this->day > 28 && this->month == 2) {
+		if (this->day > 29 && (this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))) {
+			this->month++;
+			this->day = this->day - 29;
+		}
+		else if (this->day > 28 && !(this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))) {
+			this->month++;
+			this->day = this->day - 28;
+		}
+	}
+	return *this;
+}
+
+date_ date_::operator--()
+{
+	this->day--;
+	if (this->day == 0) {
+		this->month--;
+		if (this->month == 1 || this->month == 3 || this->month == 5 || this->month == 7 || this->month == 8 || this->month == 10 || this->month == 12)
+			this->day = 31;
+		else if (this->month == 0) {
+			this->day = 31;
+			this->year--;
+			this->month = 12;
+		}
+		else if (this->month == 4 || this->month == 6 || this->month == 9 || this->month == 11)
+			this->day = 30;
+		else if (this->month == 2) {
+			if (this->year % 400 == 0 || (this->year % 4 == 0 && this->year % 100 != 0))
+				this->day = 29;
+			else
+				this->day = 28;
+		}
+	}
+	return *this;
+}
+
 void date_::getWeekDay()const
 {
 	int a = (14 - this->month) / 12;
@@ -304,6 +414,65 @@ date_ operator-(const date_ & a, int day)
 	date_ tmp(a.getDay(), a.getMonth(), a.getYear());
 	tmp -= day;
 	return tmp;
+}
+
+int daysBetweenDates(const date_ & a, const date_ & b)
+{
+	int counDays = 0;	
+	if (b.getYear() < a.getYear()) return 0;
+	int x = b.getYear(), y = a.getYear();
+	int n = b.getMonth(), m = a.getMonth();
+	
+	x = x - 1;
+	while (x != y) {			
+		if (x % 400 == 0 || (x % 4 == 0 && x % 100 != 0))
+			counDays += 366;
+		else
+			counDays += 365;
+		x--;
+	}
+	//считаем дни в b.year
+	counDays += b.getDay();
+	n = n - 1;
+	while (n != 0) {
+		if (n == 1 || n == 3 || n == 5 || n == 7 || n == 8 || n == 10)
+			counDays += 31;
+		if (n == 4 || n == 6 || n == 9 || n == 11)
+			counDays += 30;
+		if (n == 2) {
+			if (b.getYear() % 400 == 0 || (b.getYear() % 4 == 0 && b.getYear() % 100 != 0))
+				counDays += 29;
+			else
+				counDays += 28;
+		}
+		n--;
+	}
+	//считаем дни в a.year
+	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+		counDays += 31 - a.getDay();
+	if (m == 4 || m == 6 || m == 9 || m == 11)
+		counDays += 30 - a.getDay();
+	if (m == 2) {
+		if (a.getYear() % 400 == 0 || (a.getYear() % 4 == 0 && a.getYear() % 100 != 0))
+			counDays += 29-a.getDay();
+		else
+			counDays += 28-a.getDay();
+	}
+	m = m + 1;
+	while (m < 13) {
+		if (m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+			counDays += 31;
+		if (m == 4 || m == 6 || m == 9 || m == 11)
+			counDays += 30;
+		if (m == 2) {
+			if (a.getYear() % 400 == 0 || (a.getYear() % 4 == 0 && a.getYear() % 100 != 0))
+				counDays += 29;
+			else
+				counDays += 28;
+		}
+		m++;
+	}	
+	return counDays;
 }
 
 

@@ -19,8 +19,11 @@ public:
 	int getYear()const;
 	date_ operator+=(int day);
 	date_ operator-=(int day);
-	void getWeekDay()const;
-
+	date_ operator++(int);
+	date_ operator--(int);
+	date_ operator++();
+	date_ operator--();
+	void getWeekDay()const;	
 };
 
 bool operator>(const date_&a, const date_&b);
@@ -31,6 +34,7 @@ bool operator==(const date_&a, const date_&b);
 bool operator!=(const date_&a, const date_&b);
 date_ operator+(const date_&a, int day);
 date_ operator-(const date_&a, int day);
+int daysBetweenDates(const date_&a, const date_&b);
 
 ostream&operator<<(ostream&os, const date_&obj);
 istream&operator>>(istream&is, date_&obj);

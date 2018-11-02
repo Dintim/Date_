@@ -2,16 +2,25 @@
 
 void main()
 {
-	date_ a(22,5,2015);
+	/*date_ a(22,5,2015);
 	date_ b;
 	b=a+478;
 	
 	cout << b;
-	b.getWeekDay();
+	b.getWeekDay();*/
 
 	/*bool res = a >= b;
 	cout << res << endl;*/
-	
+
+	/*date_ a(22, 5, 1983);
+	date_ b;
+	b=--a;
+	cout << b;
+	cout << a;*/
+
+	date_ a(1, 11, 2018);
+	date_ b(1, 1, 2019);
+	cout << "Until New Year 2019: " << daysBetweenDates(a, b) << " days" << endl;
 
 	system("pause");
 }
