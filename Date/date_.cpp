@@ -418,60 +418,80 @@ date_ operator-(const date_ & a, int day)
 
 int daysBetweenDates(const date_ & a, const date_ & b)
 {
-	int counDays = 0;	
-	if (b.getYear() < a.getYear()) return 0;
+	int counDays = 0;
 	int x = b.getYear(), y = a.getYear();
 	int n = b.getMonth(), m = a.getMonth();
-	
-	x = x - 1;
-	while (x != y) {			
-		if (x % 400 == 0 || (x % 4 == 0 && x % 100 != 0))
-			counDays += 366;
-		else
-			counDays += 365;
-		x--;
-	}
-	//считаем дни в b.year
 	counDays += b.getDay();
-	n = n - 1;
-	while (n != 0) {
-		if (n == 1 || n == 3 || n == 5 || n == 7 || n == 8 || n == 10)
-			counDays += 31;
-		if (n == 4 || n == 6 || n == 9 || n == 11)
-			counDays += 30;
-		if (n == 2) {
-			if (b.getYear() % 400 == 0 || (b.getYear() % 4 == 0 && b.getYear() % 100 != 0))
-				counDays += 29;
-			else
-				counDays += 28;
-		}
-		n--;
-	}
-	//считаем дни в a.year
+	
 	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
 		counDays += 31 - a.getDay();
 	if (m == 4 || m == 6 || m == 9 || m == 11)
 		counDays += 30 - a.getDay();
 	if (m == 2) {
 		if (a.getYear() % 400 == 0 || (a.getYear() % 4 == 0 && a.getYear() % 100 != 0))
-			counDays += 29-a.getDay();
+			counDays += 29 - a.getDay();
 		else
-			counDays += 28-a.getDay();
+			counDays += 28 - a.getDay();
 	}
-	m = m + 1;
-	while (m < 13) {
-		if (m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
-			counDays += 31;
-		if (m == 4 || m == 6 || m == 9 || m == 11)
-			counDays += 30;
-		if (m == 2) {
-			if (a.getYear() % 400 == 0 || (a.getYear() % 4 == 0 && a.getYear() % 100 != 0))
-				counDays += 29;
+	
+	if (x > y) {
+		x = x - 1;
+		while (x != y) {
+			if (x % 400 == 0 || (x % 4 == 0 && x % 100 != 0))
+				counDays += 366;
 			else
-				counDays += 28;
+				counDays += 365;
+			x--;
 		}
-		m++;
-	}	
+
+		//считаем дни в b.year		
+		n = n - 1;
+		while (n != 0) {
+			if (n == 1 || n == 3 || n == 5 || n == 7 || n == 8 || n == 10)
+				counDays += 31;
+			if (n == 4 || n == 6 || n == 9 || n == 11)
+				counDays += 30;
+			if (n == 2) {
+				if (b.getYear() % 400 == 0 || (b.getYear() % 4 == 0 && b.getYear() % 100 != 0))
+					counDays += 29;
+				else
+					counDays += 28;
+			}
+			n--;
+		}
+		//считаем дни в a.year		
+		m = m + 1;
+		while (m < 13) {
+			if (m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+				counDays += 31;
+			if (m == 4 || m == 6 || m == 9 || m == 11)
+				counDays += 30;
+			if (m == 2) {
+				if (a.getYear() % 400 == 0 || (a.getYear() % 4 == 0 && a.getYear() % 100 != 0))
+					counDays += 29;
+				else
+					counDays += 28;
+			}
+			m++;
+		}
+	}
+	else if (x == y) {		
+		n--;
+		while (n !=m) {
+			if (n == 3 || n == 5 || n == 7 || n == 8 || n == 10)
+				counDays += 31;
+			if (n == 4 || n == 6 || n == 9 || n == 11)
+				counDays += 30;
+			if (n == 2) {
+				if (x % 400 == 0 || (x % 4 == 0 && x % 100 != 0))
+					counDays += 29;
+				else
+					counDays += 28;
+			}
+			n--;
+		}		
+	}
+	else return 0;
 	return counDays;
 }
 
