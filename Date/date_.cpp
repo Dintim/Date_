@@ -10,10 +10,6 @@ date_::date_()
 }
 
 
-date_::~date_()
-{
-}
-
 date_::date_(int day, int month, int year)
 {
 	setDay(day);
@@ -330,6 +326,7 @@ void date_::getWeekDay()const
 	
 }
 
+
 bool operator>(const date_ & a, const date_ & b)
 {
 	if (a.getYear() > b.getYear()) return true;
@@ -493,6 +490,19 @@ int daysBetweenDates(const date_ & a, const date_ & b)
 	}
 	else return 0;
 	return counDays;
+}
+
+int daysToDateFromCurrDate(const date_ & a)
+{
+	time_t t = time(0);
+	struct tm now;
+	localtime_s(&now, &t);
+	now.tm_sec;
+	int day = now.tm_mday;
+	int month = (now.tm_mon + 1);
+	int year = (now.tm_year + 1900);
+	date_ currDay(day, month, year);	
+	return daysBetweenDates(currDay, a);
 }
 
 

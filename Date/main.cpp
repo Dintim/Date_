@@ -1,5 +1,6 @@
 #include "date_.h"
 
+
 void main()
 {
 	/*date_ a(22,5,2015);
@@ -18,9 +19,13 @@ void main()
 	cout << b;
 	cout << a;*/
 
-	date_ a(1, 11, 2018);
+	date_ a(26, 11, 2018);
 	date_ b(1, 1, 2019);
 	cout << "Until New Year 2019: " << daysBetweenDates(a, b) << " days" << endl;
+	cout << "curr date: " << daysToDateFromCurrDate(b) << endl;
+
+	
+	
 
 	system("pause");
 }
